@@ -145,6 +145,8 @@ function UploadNominations() {
             description: 'The nomination position has been uploaded.',
           });
           // You can also handle any further actions here
+          // Reload the page to reflect the changes
+          window.location.reload();
         } else {
           console.error(`Error submitting data for nomination ${i + 1}:`, response.data);
           toast({
