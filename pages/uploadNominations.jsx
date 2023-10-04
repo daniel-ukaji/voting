@@ -28,22 +28,22 @@ function UploadNominations() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (isLoading || !user?.token) {
-        return;
-      }
-  
       try {
+        if (!user?.token) {
+          return;
+        }
+
         setIsLoading(true);
-  
+
         const apiUrl = 'https://virtual.chevroncemcs.com/voting/position';
         const authorizationToken = user?.token;
-  
+
         const response = await Axios.get(apiUrl, {
           headers: {
             Authorization: `Bearer ${authorizationToken}`,
           },
         });
-  
+
         if (response.status === 200) {
           console.log('Successfully fetched data:', response.data);
           setFetchedData(response.data); // Store the data in the state
@@ -58,10 +58,9 @@ function UploadNominations() {
         setIsLoading(false);
       }
     };
-  
+
     fetchData();
-  }, []); // Add dependencies to the array
-  
+  }, [user?.token]); // Add user?.token as a dependency
 
   const handleDeleteNomination = async (nominationName) => {
     try {
@@ -105,8 +104,7 @@ function UploadNominations() {
     } catch (error) {
       console.error('An error occurred:', error);
       // Handle any network or other errors here
-    }
-    finally {
+    } finally {
       setSirLoading(false);
     }
   };
