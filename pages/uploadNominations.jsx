@@ -60,7 +60,7 @@ function UploadNominations() {
     };
   
     fetchData();
-  }, [isLoading, user?.token]); // Add dependencies to the array
+  }, []); // Add dependencies to the array
   
 
   const handleDeleteNomination = async (nominationName) => {
