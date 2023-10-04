@@ -1,5 +1,18 @@
-import '@/styles/globals.css'
+// pages/_app.js
+import { AuthProvider } from '@/services/AuthContext';
+import '@/styles/globals.css';
+import { Toaster } from "@/components/ui/toaster";
+import { NewAuthProvider } from '@/services/NewAuthContext';
 
-export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />
+function MyApp({ Component, pageProps }) {
+  return (
+    <AuthProvider>
+      <NewAuthProvider>
+        <Component {...pageProps} />
+        <Toaster />
+      </NewAuthProvider>
+    </AuthProvider>
+  );
 }
+
+export default MyApp;
