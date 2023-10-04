@@ -165,7 +165,7 @@ const OtpInputField = ({
             onPaste={handleOnPaste}
             disabled={disabled}
             placeholder={0}
-            className="w-10 h-10 xl:w-20 xl:h-20 text-4xl font-medium text-center border rounded-lg outline-none border-[#e0565b] border-opacity-20 font-sora text-primary focus:shadow-sm focus:shadow-[#e0565b] placeholder:text-gray-300 placeholder:text-4xl selection:text-[#e0565b] overflow-y-hidden" // Add the overflow-x-hidden class
+            className="w-10 h-10 xl:w-20 xl:h-20 text-4xl font-medium text-center border rounded-lg outline-none border-[#16DB65] border-opacity-20 font-sora text-primary focus:shadow-sm focus:shadow-[#16DB65] placeholder:text-gray-300 placeholder:text-4xl selection:text-[#16DB65] overflow-y-hidden" // Add the overflow-x-hidden class
           />
           
         ))}
