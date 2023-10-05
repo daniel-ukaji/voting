@@ -6,6 +6,7 @@ const NewAuthContext = createContext();
 
 export function NewAuthProvider({ children }) {
   const [code, setCode] = useState(null);
+  const [employeeNumber, setEmployeeNumber] = useState(null); // Change the name here
 
   const router = useRouter();
 
@@ -22,9 +23,12 @@ export function NewAuthProvider({ children }) {
 
       // Handle the API response here
       setCode(response.data.code);
+      setEmployeeNumber(response.data.empno); // Change the name here
 
       // Store the code in local storage
       localStorage.setItem('code', response.data.code);
+      localStorage.setItem('empno', response.data.empno);
+
 
       return true; // Authentication success
     } catch (error) {
@@ -35,23 +39,34 @@ export function NewAuthProvider({ children }) {
 
   // Function to handle logout
   const logout = () => {
-    // Clear the code from state and local storage
+    // Clear the code and employeeNumber from state and local storage
     setCode(null);
+    setEmployeeNumber(null); // Change the name here
     localStorage.removeItem('code');
+    localStorage.removeItem('empno');
     // Redirect to the home page
     router.push('/signinmember');
   };
 
-  // Check for code in local storage during initialization
-  useEffect(() => {
-    const storedCode = localStorage.getItem('code');
-    if (storedCode) {
-      setCode(storedCode);
-    }
-  }, []);
+  // Check for code and employeeNumber in local storage during initialization
+useEffect(() => {
+  const storedCode = localStorage.getItem('code');
+  const storedEmployeeNumber = localStorage.getItem('empno');
+
+  if (storedCode) {
+    setCode(storedCode);
+  }
+
+  if (storedEmployeeNumber) {
+    setEmployeeNumber(storedEmployeeNumber);
+  }
+}, []);
+
+
+  
 
   return (
-    <NewAuthContext.Provider value={{ code, authenticate, logout }}>
+    <NewAuthContext.Provider value={{ code, employeeNumber, authenticate, logout }}> {/* Change the name here */}
       {children}
     </NewAuthContext.Provider>
   );

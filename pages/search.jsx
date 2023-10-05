@@ -20,6 +20,7 @@ import { useToast } from '@/components/ui/use-toast';
 
 function Search() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [positions, setPositions] = useState([]); // State for positions
   const [selectedPosition, setSelectedPosition] = useState(''); // State for selected position
@@ -27,8 +28,12 @@ function Search() {
   const [nomineeno, setNomineeno] = useState(''); // State for nomineeno
   const apiUrl = 'https://virtual.chevroncemcs.com/voting/member';
   const { toast } = useToast();
+  const { employeeNumber } = useNewAuth();
+
+    console.log('Employee Number:', employeeNumber);
 
   const {code} = useNewAuth()
+  
   console.log(code)
 
   const token = "025209";
@@ -138,6 +143,12 @@ function Search() {
     fetchSearchResults();
   }, [searchTerm]);
 
+  const handleNominateClick = (result) => {
+    setNomineeno(result.empno);
+    // setEmpno(result.employeeNumber);
+  };
+  
+
   return (
     <div>
       {/* <Navbar /> */}
@@ -161,16 +172,24 @@ function Search() {
         {searchResults.length > 0 ? (
           <ul>
             {searchResults.map((result) => (
-              <li className='font-bold flex justify-between items-center' key={result.id}>
+              <li className='flex justify-between items-center mb-5' key={result.id}>
                 <div className='flex flex-col'>
                     <div>
-                    {result.name}
-                    </div>                
-                {result.empno}
+                      <p className='font-bold'>
+                        {result.name}
+                      </p>
+                    </div> 
+
+                    <div className='flex flex-row space-x-3'>
+                      <p>Employee No:</p>
+                      <p>{result.empno}</p>
+                    </div>               
                 </div>
                 <Dialog>
                   <DialogTrigger asChild>
-                  <Button variant="outline" onClick={() => setNomineeno(result.empno)}>Nominate</Button>
+                  <Button variant="outline" onClick={() => {setNomineeno(result.empno);setEmpno(employeeNumber);}}>
+  Nominate
+</Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[700px]">
                     <DialogHeader>
