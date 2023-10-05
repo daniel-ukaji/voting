@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useNewAuth } from '@/services/NewAuthContext';
 import MemberNavbar from '@/components/MemberNavbar';
+import { useToast } from '@/components/ui/use-toast';
 
 function Search() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -25,6 +26,8 @@ function Search() {
   const [empno, setEmpno] = useState(''); // State for empno
   const [nomineeno, setNomineeno] = useState(''); // State for nomineeno
   const apiUrl = 'https://virtual.chevroncemcs.com/voting/member';
+  const { toast } = useToast();
+
   const {code} = useNewAuth()
   console.log(code)
 
@@ -53,7 +56,7 @@ function Search() {
   
       // Set the headers with the authorization token
       const headers = {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${code}`,
       };
   
       // Send the GET request to the nomination API endpoint
@@ -64,17 +67,26 @@ function Search() {
 
       console.log('Nomination Response:', response.data);
   
-      if (response.status === 200 && response.data.error === false) {
-        alert('Your nomination has been registered!');
+      if (response.status === 200) {
+        // alert('Your nomination has been registered!');
         // Clear the form fields after a successful nomination
         setEmpno('');
         setSelectedPosition('');
         setNomineeno('');
+        toast({
+          title: 'Nomination',
+          description: `${response.data.message}`,
+        });
       } else {
         console.error('Nomination failed:', response.data.message);
       }
     } catch (error) {
       console.error('Error nominating:', error);
+      toast({
+        title: 'There was a problem.',
+        description: 'There was an error nominating your candidate.',
+        variant: 'destructive',
+      });
     }
   };
 
@@ -209,7 +221,7 @@ function Search() {
                     </div>
                     <DialogFooter>
                       <Button type="submit" onClick={handleNomination}>
-                        Save changes
+                        Nominate
                       </Button>
                     </DialogFooter>
                   </DialogContent>

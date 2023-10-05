@@ -6,7 +6,7 @@ import Image from 'next/image'
 import NavLanding from '@/components/NavLanding'
 import Link from 'next/link'
 
-export default function Home() {
+function landing() {
   return (
     <div className="">
       {/* <Head>
@@ -52,3 +52,4 @@ export default function Home() {
   )
 }
 
+export default landing

@@ -11,6 +11,9 @@ function SmallBanner() {
   const [isLoading, setIsLoading] = useState(false);
   const apiUrl = 'https://virtual.chevroncemcs.com/voting/stage/current';
   const { user } = useAuth();
+  console.log(user?.email);
+
+  const userEmail=user?.email
 
   const handleStageChange = (event) => {
     selectedStageRef.current = parseInt(event.target.value, 10);
@@ -21,7 +24,7 @@ function SmallBanner() {
 
     // Prepare the data for the PATCH request
     const requestData = {
-      email: 'charles.osegbue@chevron.com',
+      email: userEmail,
       id: selectedStageRef.current,
     };
 

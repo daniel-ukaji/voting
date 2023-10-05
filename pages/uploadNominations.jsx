@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/services/AuthContext';
 import { useToast } from '@/components/ui/use-toast';
 import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/router';
 
 function UploadNominations() {
   const [nominations, setNominations] = useState(['']);
@@ -15,6 +16,18 @@ function UploadNominations() {
   const { user } = useAuth();
   const { toast } = useToast();
   console.log(user?.token);
+  console.log(user?.email) 
+
+  const router = useRouter();
+
+  // Use the useEffect hook to check if the user is logged in
+  useEffect(() => {
+    if (!user) {
+      router.push('/signin');
+    }
+  }, [user, router]);
+
+  const userEmail = user?.email;
 
   const addNomination = () => {
     setNominations([...nominations, '']);
@@ -70,7 +83,7 @@ function UploadNominations() {
       const authorizationToken = user?.token;
 
       const requestBody = {
-        email: 'charles.osegbue@chevron.com',
+        email: userEmail,
         name: nominationName,
       };
 
@@ -128,7 +141,7 @@ function UploadNominations() {
         if (!nomination) continue;
 
         const requestBody = {
-          email: 'charles.osegbue@chevron.com',
+          email: userEmail,
           name: nomination,
         };
 

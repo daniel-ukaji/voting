@@ -20,7 +20,7 @@ function Signin() {
 
     try {
       await login(email, password); // No need to capture the response here
-      router.push('/'); // Redirect to the home page after successful login
+      router.push('/admin'); // Redirect to the home page after successful login
     } catch (error) {
       console.error('Login failed', error);
     } finally {
@@ -28,11 +28,11 @@ function Signin() {
     }
   };
 
-  // Check if the user is authenticated and redirect if already logged in
-  if (user) {
-    router.push('/');
-    return null; // Redirecting, no need to render anything
-  }
+  // // Check if the user is authenticated and redirect if already logged in
+  // if (user) {
+  //   router.push('/');
+  //   return null; // Redirecting, no need to render anything
+  // }
 
 
 
