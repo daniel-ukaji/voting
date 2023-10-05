@@ -1,10 +1,13 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import axios from "axios"
+import { useRouter } from 'next/router';
 
 const NewAuthContext = createContext();
 
 export function NewAuthProvider({ children }) {
   const [code, setCode] = useState(null);
+
+  const router = useRouter();
 
   // Function to handle authentication
   const authenticate = async (empno, otpValue) => {
@@ -19,18 +22,24 @@ export function NewAuthProvider({ children }) {
 
       // Handle the API response here
       setCode(response.data.code);
-      console.log(code)
-      console.log(response.data)
 
       // Store the code in local storage
       localStorage.setItem('code', response.data.code);
-      console.log(code)
 
       return true; // Authentication success
     } catch (error) {
       console.error('Authentication Error:', error);
       return false; // Authentication failed
     }
+  };
+
+  // Function to handle logout
+  const logout = () => {
+    // Clear the code from state and local storage
+    setCode(null);
+    localStorage.removeItem('code');
+    // Redirect to the home page
+    router.push('/signinmember');
   };
 
   // Check for code in local storage during initialization
@@ -42,7 +51,7 @@ export function NewAuthProvider({ children }) {
   }, []);
 
   return (
-    <NewAuthContext.Provider value={{ code, authenticate }}>
+    <NewAuthContext.Provider value={{ code, authenticate, logout }}>
       {children}
     </NewAuthContext.Provider>
   );
