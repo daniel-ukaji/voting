@@ -26,6 +26,7 @@ function Navbar() {
 
             <div className='flex items-center space-x-8'>
                 <Link href='/'>Home</Link>
+                <Link href='/upload'>Upload Candidates</Link>
                 {/* <Link href='/upload'>Upload</Link>
                 <Link href='/ballotresultspage'>Draw</Link> */}
                 {/* <Link href='/signinmember' className={buttonVariants()} >Member SIgn In</Link> */}

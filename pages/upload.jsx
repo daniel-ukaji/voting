@@ -21,10 +21,14 @@ import axios from "axios";
 import { useAuth } from '@/services/AuthContext'
 import Uploaded from '@/components/Uploaded'
 // import { useToast } from '@/components/ui/use-toast'
+import * as XLSX from "xlsx";
+
 
 
 function Uploads() {
-//   const { user } = useAuth();
+  // const { user } = useAuth();
+
+  // const userEmail = user?.email
 //   const { toast } = useToast()
 //   const [plotName, setPlotName] = useState("");
 //   const [subscriber, setSubscriber] = useState("");
@@ -128,6 +132,25 @@ function Uploads() {
 //     }
 //   };
 
+const handleExportExcel = () => {
+        
+  // Replace this with your hardcoded data
+const customData = [
+['Employee Number', 'Name', 'Eligible Email'],
+['123456', 'Charles Osegbue', 'charlesosegbue@gmail.com'],
+['246810', 'Daniel Ukaji', 'danielukaji@gmail.com'],
+// Add more rows as needed
+];
+
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet(customData);
+  XLSX.utils.book_append_sheet(wb, ws, 'Sample Voting Data');
+
+  XLSX.writeFile(wb, 'SampleVoting.xlsx');
+
+};
+
+
   return (
     <div>
       <Navbar />
@@ -149,13 +172,12 @@ function Uploads() {
             <div className='-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6'>
               <div className='flex justify-between gap-x-4 py-3'>
                 <p className='text-zinc-500'>
-                  Download the Excel template for uploading bulk ballots
+                  Download the Excel template for uploading bulk candidates
                 </p>
               </div>
 
-              <Link className={buttonVariants({
-                className: 'w-full mt-4 mb-6'
-              })} href='/r/create'>Download</Link>
+              <Button onClick={handleExportExcel} className="w-full mt-4 mb-6">Download</Button>
+
             </div>
           </div>          
 
@@ -164,14 +186,14 @@ function Uploads() {
             <div className='bg-emerald-100 px-6 py-4'>
               <p className='font-semibold py-3 flex items-center gap-1.5'>
                 <Landmark className='w-4 h-4' />
-                Upload a Single Voter
+                Upload a Single Candidate
               </p>
             </div>
 
             <div className='-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6'>
               <div className='flex justify-between gap-x-4 py-3'>
                 <p className='text-zinc-500'>
-                  You can click on the button below to upload a single voter
+                  You can click on the button below to upload a single candidate
                 </p>
               </div>
 

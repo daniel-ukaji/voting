@@ -16,6 +16,8 @@ function Uploaded({ ballotId }) {
   const [jsonData, setJsonData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  const userEmail = user?.email
+
   const userToken = user?.token;
 
   console.log(userToken);
@@ -33,12 +35,12 @@ function Uploaded({ ballotId }) {
   
       // Create the API data object matching the endpoint structure
       const apiData = {
-        email: "charles.osegbue@chevron.com",
+        email: userEmail,
         data: parsedData.map((row) => ({
           empno: row["Employee Number"], // Replace "Employee Number" with the actual column name
           name: row["Name"], // Replace "Name" with the actual column name
           eligibleEmail: row["Eligible Email"], // Replace "Eligible Email" with the actual column name
-        })),
+        })), 
       };
   
       setJsonData(apiData);
@@ -76,8 +78,8 @@ function Uploaded({ ballotId }) {
         // Handle API response here
         console.log("API Response:", response.data);
         toast({
-          title: 'Success!!',
-          description: 'The data has been uploaded.',
+          title: 'Voting',
+          description: `${response.data.message}`,
         });
       })
       .catch((error) => {
@@ -99,7 +101,7 @@ function Uploaded({ ballotId }) {
   return (
     <div className="App">
       <div className="grid w-full max-w-sm items-center gap-1.5">
-        <Label>Plot Bulk Upload</Label>
+        <Label>Candidate Bulk Upload</Label>
         <Input id="picture" type="file" accept=".xlsx, .xls, .csv" onChange={handleFileUpload} />
       </div>
 
@@ -134,7 +136,7 @@ function Uploaded({ ballotId }) {
           </>
         ) : (
           <>
-            Submit Bulk Plot Data
+            Submit Candidate Data
           </>
         )}
       </Button>
