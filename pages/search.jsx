@@ -170,7 +170,7 @@ function Search() {
                 </div>
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button variant="outline">Nominate</Button>
+                  <Button variant="outline" onClick={() => setNomineeno(result.empno)}>Nominate</Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[700px]">
                     <DialogHeader>
