@@ -6,64 +6,55 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 
 function Nominations() {
-  const [nominationsData, setNominationsData] = useState([]);
-  const [loading, setLoading] = useState(true);
   const { user } = useAuth();
-  const { toast } = useToast()
+  const { toast } = useToast();
 
   const userToken = user?.token;
   const userEmail = user?.email;
 
+  const [loading, setLoading] = useState(true);
+  const [nominationsData, setNominationsData] = useState([]);
+
   useEffect(() => {
-    // Define the request body
-    const requestBody = {
-      email: userEmail,
-    };
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('https://virtual.chevroncemcs.com/voting/nominations', {
+          params: { email: userEmail },
+          headers: { Authorization: `Bearer ${userToken}` },
+        });
 
-    // Define headers with the Authorization token
-    const headers = {
-      Authorization: `Bearer ${userToken}`,
-    };
-
-    // Make the GET request to the API endpoint with authorization headers
-    axios
-      .get('https://virtual.chevroncemcs.com/voting/nominations', {
-        params: requestBody,
-        headers: headers,
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          // Data has been successfully fetched
+        if (response.data.error === false) {
           setNominationsData(response.data.data);
           setLoading(false);
-          
         } else {
-          // Handle API request failure here
-          console.error('API request failed with status:', response.status);
+          console.error('API request failed with error:', response.data);
           setLoading(false);
         }
-      })
-      .catch((error) => {
-        // Handle any errors that occurred during the request
+      } catch (error) {
         console.error('Error fetching data:', error);
         setLoading(false);
-      });
-  }, [userToken, userEmail]); // Include userToken and userEmail as dependencies
-
-  // Determine unique position names with counts greater than zero
-  const positionNames = nominationsData?.reduce((names, item) => {
-    item.counts.forEach((countItem) => {
-      if (countItem.count > 0) {
-        names.add(countItem.positionName);
       }
+    };
+
+    fetchData();
+  }, [userToken, userEmail]);
+
+  const getPositionHeaders = () => {
+    const positionNames = new Set();
+
+    nominationsData.forEach((item) => {
+      item.counts.forEach((countItem) => {
+        if (countItem.count > 0) {
+          positionNames.add(countItem.positionName);
+        }
+      });
     });
-    return names;
-  }, new Set());
 
-  // Convert the set of position names to an array for rendering headers
-  const positionHeaders = Array.from(positionNames);
+    return Array.from(positionNames);
+  };
 
-  // Function to handle the "Set Nomination" button click
+  const positionHeaders = getPositionHeaders();
+
   const handleSetNomination = async (empno, positionId) => {
     try {
       const response = await axios.post(
@@ -81,18 +72,15 @@ function Nominations() {
       );
 
       if (response.status === 200) {
-        // Handle success, you can update your UI as needed
         console.log('Nomination set successfully:', response.data);
         toast({
-            title: 'Nominations',
-            description: `${response.data.message}`,
-          });
+          title: 'Nominations',
+          description: `${response.data.message}`,
+        });
       } else {
-        // Handle API request failure here
         console.error('API request failed with status:', response.status);
       }
     } catch (error) {
-      // Handle any errors that occurred during the request
       console.error('Error setting nomination:', error);
       toast({
         title: 'There was a problem.',
