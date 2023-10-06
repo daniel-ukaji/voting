@@ -26,111 +26,6 @@ import * as XLSX from "xlsx";
 
 
 function Uploads() {
-  // const { user } = useAuth();
-
-  // const userEmail = user?.email
-//   const { toast } = useToast()
-//   const [plotName, setPlotName] = useState("");
-//   const [subscriber, setSubscriber] = useState("");
-//   const [plotData, setPlotData] = useState(null);
-//   const [isLoading, setIsLoading] = useState(false);
-
-
-//   const userToken = user?.token;
-//   console.log(userToken)
-
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//     // Start loading
-//     setIsLoading(true);
-
-//     // Prepare the request payload
-//     const requestData = {
-//       email: 'chevroncemcs@outlook.com',
-//       name: plotName,
-//     };
-
-//     try {
-//       // Make a POST request to the API endpoint with the user's token
-//       const response = await axios.post(
-//         'https://virtual.chevroncemcs.com/ballot/plot/single',
-//         requestData,
-//         {
-//           headers: {
-//             Authorization: `Bearer ${userToken}`,
-//             'Content-Type': 'application/json',
-//           },
-//         }
-//       );
-
-//       // Handle the response data
-//       setPlotData(response.data);
-//       console.log(response.data);
-//       toast({
-//         title: 'Success!!',
-//         description: 'The Plot has been uploaded.',
-//       });
-//     } catch (error) {
-//       console.error('Error fetching plot data:', error);
-//       toast({
-//         title: 'There was a problem.',
-//         description: 'There was an error uploading the data',
-//         variant: 'destructive',
-//       });
-//       // Handle the error as needed
-//     } finally {
-//       // Stop loading
-//       setIsLoading(false);
-//     }
-//   };
-
-//   const handleSubscriberSubmit = async (e) => {
-//     e.preventDefault();
-
-//     // Start loading
-//     setIsLoading(true);
-
-//     // Prepare the request payload
-//     const requestData = {
-//       email: 'chevroncemcs@outlook.com',
-//       name: subscriber,
-//     };
-
-//     try {
-//       // Make a POST request to the API endpoint with the user's token
-//       const response = await axios.post(
-//         'https://virtual.chevroncemcs.com/ballot/subscriber/single',
-//         requestData,
-//         {
-//           headers: {
-//             Authorization: `Bearer ${userToken}`,
-//             'Content-Type': 'application/json',
-//           },
-//         }
-//       );
-
-//       // Handle the response data
-//       setPlotData(response.data);
-//       console.log(response.data);
-//       toast({
-//         title: 'Success!!',
-//         description: 'The Subscriber has been uploaded.',
-//       });
-//     } catch (error) {
-//       console.error('Error fetching subscriber data:', error);
-//       toast({
-//         title: 'There was a problem.',
-//         description: 'There was an error uploading the subscriber details',
-//         variant: 'destructive',
-//       });
-//       // Handle the error as needed
-//     } finally {
-//       // Stop loading
-//       setIsLoading(false);
-//     }
-//   };
 
 const handleExportExcel = () => {
         
@@ -215,7 +110,31 @@ const customData = [
                 <div className="grid gap-4 py-4">
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="name" className="text-right">
-                      Voter
+                      Name
+                    </Label>
+                    <Input  
+                      type="text"
+                      placeholder="Enter voter name"
+                    //   value={plotName}
+                    //   onChange={(e) => setPlotName(e.target.value)} 
+                      className="col-span-3 outline-none" 
+                    />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="name" className="text-right">
+                      Employee Number
+                    </Label>
+                    <Input  
+                      type="text"
+                      placeholder="Enter voter name"
+                    //   value={plotName}
+                    //   onChange={(e) => setPlotName(e.target.value)} 
+                      className="col-span-3 outline-none" 
+                    />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="name" className="text-right">
+                      Email
                     </Label>
                     <Input  
                       type="text"
@@ -249,10 +168,33 @@ const customData = [
         </div>
 
         {/* Render the Uploaded component */}
-        <div className='flex items-center space-x-32'>
+        <div className='flex items-center space-x-28'>
           <Uploaded />
           {/* <Uploadeds /> */}
-          
+          {/* Download Document */}
+          <div className='overflow-hidden h-fit rounded-lg border border-gray-200 order-first md:order-last'>
+            <div className='bg-emerald-100 px-6 py-4'>
+              <p className='font-semibold py-3 flex items-center gap-1.5'>
+                <Download className='w-4 h-4' />
+                See all candidates
+              </p>
+            </div>
+
+            <div className='-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6'>
+              <div className='flex justify-between gap-x-4 py-3'>
+                <p className='text-zinc-500'>
+                  Click here to view all the eligible candidates added
+                </p>
+              </div>
+
+              <Link href="/candidates" className="w-full">
+                <Button className="mb-5">
+                  See all candidates
+                </Button>
+              </Link>
+
+            </div>
+          </div>
 
         </div>
       </div>
