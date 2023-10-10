@@ -28,6 +28,7 @@ function Navbar() {
                 <Link href='/admin'>Home</Link>
                 <Link href='/upload'>Upload Candidates</Link>
                 <Link href='/nominations'>See Nominations</Link>
+                <Link href='/seevotes'>Votes</Link>
 
                 {/* <Link href='/upload'>Upload</Link>
                 <Link href='/ballotresultspage'>Draw</Link> */}

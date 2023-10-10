@@ -25,6 +25,8 @@
     "react-confetti": "^6.1.0",
     "react-confetti-explosion": "^2.1.2",
     "react-dom": "latest",
+    "react-quill": "^2.0.0",
+    "react-spinners": "^0.13.8",
     "react-toastify": "^9.1.3",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",

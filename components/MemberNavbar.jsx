@@ -28,6 +28,8 @@ function MemberNavbar() {
 
         <div className='flex items-center space-x-8'>
           <Link href='/'>Home</Link>
+          <Link href='/campaign'>Create campaign</Link>
+          <Link href='/seecampaigns'>See Campaigns</Link>
           {code ? (
             <Button onClick={handleLogout}>Log Out</Button>
             ) : (

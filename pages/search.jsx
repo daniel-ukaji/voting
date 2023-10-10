@@ -103,6 +103,8 @@ function Search() {
       try {
         const response = await axios.get('https://virtual.chevroncemcs.com/voting/position');
 
+        console.log(response)
+
         if (response.status === 200) {
           setPositions(response.data.data);
         } else {
