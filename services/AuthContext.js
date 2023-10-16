@@ -4,17 +4,18 @@ import { useRouter } from 'next/router';
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState({ email: null, token: null });
+  const [user, setUser] = useState({ email: null, token: null, super: null });
   const router = useRouter();
 
   useEffect(() => {
     // Check if the user is authenticated using a token stored in cookies or localStorage
     const token = localStorage.getItem('token');
     const email = localStorage.getItem('email');
+    const superToken = localStorage.getItem('super');
 
-    if (token && email) {
+    if (token && email && superToken) {
       // You can also validate the token on the server for added security
-      setUser({ email, token });
+      setUser({ email, token, superToken });
     }
   }, []);
 
@@ -35,9 +36,10 @@ export function AuthProvider({ children }) {
       if (data && data.token) {
         console.log('Login successful. Token:', data);
         console.log('Login successful. Token:', data.token);
-        setUser({ email, token: data.token });
+        setUser({ email, token: data.token, superToken: data.data.super });
         localStorage.setItem('token', data.token);
         localStorage.setItem('email', email); // Store the email
+        localStorage.setItem('super', data.data.super);
       } else {
         console.error('Token not found in response');
         throw new Error('Authentication failed');
@@ -52,7 +54,8 @@ export function AuthProvider({ children }) {
     // Remove the token from localStorage and reset the user state
     localStorage.removeItem('token');
     localStorage.removeItem('email'); // Remove the email
-    setUser({ email: null, token: null });
+    localStorage.removeItem('super');
+    setUser({ email: null, token: null, superToken: null });
 
     // Redirect to the home page
     router.push('/signin');

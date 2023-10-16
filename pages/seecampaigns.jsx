@@ -22,7 +22,12 @@ function Seecampaigns() {
   const [voterno, setVoterNo] = useState(''); // State for positions
   const [isLoading, setIsLoading] = useState(false)
   const [page, setPage] = useState(1);
+
   const { toast } = useToast();
+
+  const {currentStage} = useNewAuth();
+
+  console.log(currentStage);
 
   const {code} = useNewAuth();
 
@@ -131,7 +136,21 @@ function Seecampaigns() {
   return (
     <div>
       <MemberNavbar />
-      {loading ? (
+      {currentStage === 'Nomination' ? (
+        <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
+        YOU DO NOT HAVE ACCESS TO THIS PAGE
+      </div>
+      ) : currentStage === 'Voting Ended' ? (
+        <div>
+          <MemberNavbar />
+          <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
+            YOU DO NOT HAVE ACCESS TO THIS PAGE
+          </div>
+        </div>
+      ) : (
+        <>
+
+{loading ? (
         <p>Loading...</p>
       ) : (
         <div className='mt-20'>
@@ -163,7 +182,7 @@ function Seecampaigns() {
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-[700px]">
                       <DialogHeader>
-                        <DialogTitle className="">Nominate your Candidate</DialogTitle>
+                        <DialogTitle className="">Vote your Candidate</DialogTitle>
                       </DialogHeader>
                       <div className="grid gap-4 py-4">
                         <div className="grid grid-cols-4 items-center gap-4">
@@ -223,6 +242,9 @@ function Seecampaigns() {
           ))}
         </div>
       )}
+
+        </> )}
+      
     </div>
   );
 }

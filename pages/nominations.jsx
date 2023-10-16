@@ -16,6 +16,11 @@ function Nominations() {
   const userToken = user?.token;
   const userEmail = user?.email;
 
+
+  console.log('Super:',user?.superToken);
+
+  const superrToken = user?.superToken;
+
   const [loading, setLoading] = useState(true);
   const [nominationsData, setNominationsData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -23,8 +28,10 @@ function Nominations() {
   const [positions, setPositions] = useState([]); // State for positions
   const [selectedPosition, setSelectedPosition] = useState(''); // State for selected position
 
-  console.log(userToken)
+  const [sortedNominationsData, setSortedNominationsData] = useState([]);
+  const [sortByPosition, setSortByPosition] = useState('');
 
+  console.log(userToken);
 
   // CSS class for green rows
   const greenRowClass = 'green-row';
@@ -37,7 +44,7 @@ function Nominations() {
           headers: { Authorization: `Bearer ${userToken}` },
         });
 
-        console.log(response.data)
+        console.log(response.data);
 
         if (response.data.error === false) {
           setNominationsData(response.data.data);
@@ -55,13 +62,13 @@ function Nominations() {
     fetchData();
   }, [userToken, userEmail]);
 
-  //Fetch positions data from the API
+  // Fetch positions data from the API
   useEffect(() => {
     async function fetchPositions() {
       try {
         const response = await axios.get('https://virtual.chevroncemcs.com/voting/position');
 
-        console.log('New Norm',response)
+        console.log('New Norm', response);
 
         if (response.status === 200) {
           setPositions(response.data.data);
@@ -95,7 +102,7 @@ function Nominations() {
   const handleSetNomination = async () => {
     try {
       setIsLoading(true); // Start loading
-  
+
       const response = await axios.post(
         'https://virtual.chevroncemcs.com/voting/setnominated',
         {
@@ -109,7 +116,7 @@ function Nominations() {
           },
         }
       );
-  
+
       if (response.status === 200) {
         console.log('Nomination set successfully:', response.data);
         toast({
@@ -132,11 +139,33 @@ function Nominations() {
       setIsLoading(false); // Stop loading, whether successful or not
     }
   };
+
+  // Function to sort nominations data by the count for a specific position
+  function sortNominationsDataByPosition(data, position) {
+    return data.sort((a, b) => {
+      const countA = a.counts.find((countItem) => countItem.positionName === position)?.count || 0;
+      const countB = b.counts.find((countItem) => countItem.positionName === position)?.count || 0;
+      return countB - countA;
+    });
+  }
+
+  // Event handler to handle sorting when a position header is clicked
+  const handlePositionHeaderClick = (position) => {
+    if (sortByPosition === position) {
+      // If the same position is clicked again, reverse the sorting order.
+      setSortedNominationsData([...sortedNominationsData.reverse()]);
+    } else {
+      // Sort the data by the selected position.
+      setSortByPosition(position);
+      setSortedNominationsData(sortNominationsDataByPosition([...nominationsData], position));
+    }
+  };
   
 
   return (
     <div>
       <Navbar />
+      
       <div className="container mx-auto mt-20 mb-20">
         <h1 className="text-3xl font-semibold mb-4">Nominations</h1>
         {loading ? (
@@ -150,16 +179,26 @@ function Nominations() {
                   <tr>
                     <th className="px-6 py-3 bg-gray-200 text-left">Employee Number</th>
                     {positionHeaders.map((header, index) => (
-                      <th key={index} className="px-6 py-3 bg-gray-200 text-left">
-                        {header}
+                      <th
+                        key={index}
+                        className="px-6 py-3 bg-gray-200 text-left cursor-pointer"
+                        onClick={() => handlePositionHeaderClick(header)}
+                      >
+                        {header} ↓↑
+                        {sortByPosition === header && ' ↓'}
                       </th>
                     ))}
                     <th className="px-6 py-3 bg-gray-200 text-left">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {nominationsData.map((item, index) => (
-                    <tr key={index} className={`${index % 2 === 0 ? 'bg-gray-100' : ''} ${item.nominated === 1 ? 'bg-green-500' : ''}`}>
+                  {sortedNominationsData.map((item, index) => (
+                    <tr
+                      key={index}
+                      className={`${index % 2 === 0 ? 'bg-gray-100' : ''} ${
+                        item.nominated === 1 ? 'bg-green-500' : ''
+                      }`}
+                    >
                       <td className="px-6 py-4">{item.empno}</td>
                       {positionHeaders.map((header, headerIndex) => (
                         <td key={headerIndex} className="px-6 py-4">
@@ -167,66 +206,70 @@ function Nominations() {
                         </td>
                       ))}
                       <td>
-                      <Dialog>
-                    <DialogTrigger asChild>
-                    <Button className="" onClick={() => setIsEmpno(item.empno)}>Nominate</Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[700px]">
-                      <DialogHeader>
-                        <DialogTitle className="">Nominate your Candidate</DialogTitle>
-                      </DialogHeader>
-                      <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label className="text-right">Candidate Employee No.</Label>
-                          <Input
-                            type="text"
-                            value={isEmpno}
-                            onChange={(e) => setIsEmpno(e.target.value)}
-                            className="col-span-3"
-                          />
+                        
+                      {superrToken !== "0" && ( 
+                        <Dialog>
+                      <DialogTrigger asChild>
+                      <Button className="" onClick={() => setIsEmpno(item.empno)}>Nominate</Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-[700px]">
+                        <DialogHeader>
+                          <DialogTitle className="">Nominate your Candidate</DialogTitle>
+                        </DialogHeader>
+                        <div className="grid gap-4 py-4">
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <Label className="text-right">Candidate Employee No.</Label>
+                            <Input
+                              type="text"
+                              value={isEmpno}
+                              onChange={(e) => setIsEmpno(e.target.value)}
+                              className="col-span-3"
+                            />
+                          </div>
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="positions" className="text-right">Positions</Label>
+                            <select
+            id="positions"
+            className="col-span-3 border p-2 rounded-md"
+            value={selectedPosition}
+            onChange={(e) => setSelectedPosition(e.target.value)}
+          >
+            <option value="">Select Position</option>
+            {positions.map((position) => (
+              <option key={position.positionId} value={position.id}>
+                {position.name}
+              </option>
+            ))}
+          </select>
+                          </div>
+                          {/* <div className="grid grid-cols-4 items-center gap-4">
+                            <Label className="text-right">Candidate Employee No.</Label>
+                            <Input
+                              type="text"
+                              value={voterno}
+                              onChange={(e) => setVoterNo(e.target.value)}
+                              className="col-span-3"
+                            />
+                          </div> */}
                         </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="positions" className="text-right">Positions</Label>
-                          <select
-          id="positions"
-          className="col-span-3 border p-2 rounded-md"
-          value={selectedPosition}
-          onChange={(e) => setSelectedPosition(e.target.value)}
-        >
-          <option value="">Select Position</option>
-          {positions.map((position) => (
-            <option key={position.positionId} value={position.id}>
-              {position.name}
-            </option>
-          ))}
-        </select>
-                        </div>
-                        {/* <div className="grid grid-cols-4 items-center gap-4">
-                          <Label className="text-right">Candidate Employee No.</Label>
-                          <Input
-                            type="text"
-                            value={voterno}
-                            onChange={(e) => setVoterNo(e.target.value)}
-                            className="col-span-3"
-                          />
-                        </div> */}
-                      </div>
-                      <DialogFooter>
-                      <Button onClick={handleSetNomination} className="mb-10" disabled={isLoading}>
-                        {isLoading ? (
-                          <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            Setting Nominee...
-                          </>
-                        ) : (
-                          <>
-                            Set Nominee
-                          </>
-                        )}
-                      </Button>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
+                        <DialogFooter>
+                        <Button onClick={handleSetNomination} className="mb-10" disabled={isLoading}>
+                          {isLoading ? (
+                            <>
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              Setting Nominee...
+                            </>
+                          ) : (
+                            <>
+                              Set Nominee
+                            </>
+                          )}
+                        </Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+
+                      )}
                       </td>
                     </tr>
                   ))}

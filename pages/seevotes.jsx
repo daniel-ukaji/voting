@@ -58,25 +58,6 @@ function Seevotes() {
   }, [userToken, userEmail]);
 
   //Fetch positions data from the API
-  useEffect(() => {
-    async function fetchPositions() {
-      try {
-        const response = await axios.get('https://virtual.chevroncemcs.com/voting/position');
-
-        console.log('New Norm', response);
-
-        if (response.status === 200) {
-          setPositions(response.data.data);
-        } else {
-          console.error('API request failed with status:', response.status);
-        }
-      } catch (error) {
-        console.error('Error fetching positions:', error);
-      }
-    }
-
-    fetchPositions();
-  }, []);
 
   const getPositionHeaders = () => {
     const positionNames = new Set();
@@ -93,47 +74,6 @@ function Seevotes() {
   };
 
   const positionHeaders = getPositionHeaders();
-
-  const handleSetNomination = async () => {
-    try {
-      setIsLoading(true); // Start loading
-
-      const response = await axios.post(
-        'https://virtual.chevroncemcs.com/voting/setnominated',
-        {
-          email: userEmail,
-          empno: isEmpno,
-          positionId: selectedPosition,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${userToken}`,
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        console.log('Nomination set successfully:', response.data);
-        toast({
-          title: 'Nominations',
-          description: `${response.data.message}`,
-        });
-        // Reload the page to reflect the changes
-        window.location.reload();
-      } else {
-        console.error('API request failed with status:', response.status);
-      }
-    } catch (error) {
-      console.error('Error setting nomination:', error);
-      toast({
-        title: 'There was a problem.',
-        description: 'There was an error setting your nomination',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsLoading(false); // Stop loading, whether successful or not
-    }
-  };
 
   useEffect(() => {
     // Calculate the highest results for each position

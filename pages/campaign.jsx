@@ -22,6 +22,10 @@ function Campaign() {
   const { employeeNumber } = useNewAuth();
   const {code} = useNewAuth();
 
+  const {currentStage} = useNewAuth();
+
+  console.log(currentStage)
+
   const router = useRouter();
 
   console.log(code);
@@ -109,7 +113,23 @@ function Campaign() {
       </div>
     ) : (
       <div className="mt-20 max-w-6xl mx-auto">
-        <h1 className='font-bold text-3xl mt-20 mb-5'>Start your Campaign</h1>
+        {currentStage === 'Nomination' ? (
+          <div>
+        <MemberNavbar />
+        <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
+          YOU DO NOT HAVE ACCESS TO THIS PAGE
+        </div>
+      </div>          
+      ) : currentStage === 'Voting Ended' ? (
+        <div>
+          <MemberNavbar />
+          <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
+            NOT AVAILABLE
+          </div>
+        </div>
+      ) : (
+            <>
+              <h1 className='font-bold text-3xl mt-20 mb-5'>Start your Campaign</h1>
         <div
           className="image-upload-box mb-5 w-1/2"
           onClick={openFileInput}
@@ -148,14 +168,7 @@ function Campaign() {
           onChange={handleIsMessageChange}
         />
         </div>
-        {/* {ReactQuillComponent && (
-          <ReactQuillComponent
-            value={editorHtml}
-            onChange={handleChange}
-            modules={Campaign.modules}
-            style={{ height: '200px', width: '50%' }}
-          />
-        )} */}
+        
         <div className="mt-10">
           <label>
             Employee Number:
@@ -163,6 +176,10 @@ function Campaign() {
           </label>
           <Button onClick={handleSubmit} className="mt-5 mb-10">Submit</Button>
         </div>
+            
+        </>)}
+        
+        
       </div>
       )}
     </div>

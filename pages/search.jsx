@@ -17,6 +17,7 @@ import { Label } from "@/components/ui/label"
 import { useNewAuth } from '@/services/NewAuthContext';
 import MemberNavbar from '@/components/MemberNavbar';
 import { useToast } from '@/components/ui/use-toast';
+import { useAuth } from '@/services/AuthContext';
 
 function Search() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -29,8 +30,11 @@ function Search() {
   const apiUrl = 'https://virtual.chevroncemcs.com/voting/member';
   const { toast } = useToast();
   const { employeeNumber } = useNewAuth();
+  const { currentStage } = useNewAuth();
 
-    console.log('Employee Number:', employeeNumber);
+  console.log('Current Stage:',currentStage);
+
+  console.log('Employee Number:', employeeNumber);
 
   const {code} = useNewAuth()
   

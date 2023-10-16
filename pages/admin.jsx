@@ -13,6 +13,10 @@ export default function Admin() {
   const { user } = useAuth();
   const router = useRouter();
 
+  console.log(user?.token);
+
+  console.log('Super:',user?.superToken);
+
   // Use the useEffect hook to check if the user is logged in
   useEffect(() => {
     if (!user) {

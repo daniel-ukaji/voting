@@ -2,7 +2,7 @@ import Navbar from '@/components/Navbar'
 import { Button, buttonVariants } from '@/components/ui/button'
 import { Download, HomeIcon, Landmark, Loader2, Upload, UserCheck } from 'lucide-react'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 // import Uploaded from './uploaded'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
@@ -27,6 +27,16 @@ import * as XLSX from "xlsx";
 
 function Uploads() {
 
+  const { user } = useAuth();
+  
+
+  console.log(user?.token);
+
+  console.log('Super:',user?.superToken);
+
+  const superrToken = user?.superToken;
+
+
 const handleExportExcel = () => {
         
   // Replace this with your hardcoded data
@@ -49,7 +59,14 @@ const customData = [
   return (
     <div>
       <Navbar />
-      <div className='max-w-6xl mx-auto mt-20'>
+      
+      {superrToken === '0' ? (
+        <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
+        YOU DO NOT HAVE ACCESS TO THIS PAGE
+      </div>
+      ) : (
+        <>
+        <div className='max-w-6xl mx-auto mt-20'>
         {/* <h1 className='font-bold text-3xl md:text-4xl mb-5'>Upload bulk Document</h1> */}
 
         <div className='grid grid-cols-1 md:grid-cols-3 gap-y-4 md:gap-y-4 py-6 gap-x-8'>
@@ -198,6 +215,9 @@ const customData = [
 
         </div>
       </div>
+        </>
+      )}
+      
     </div>
   )
 }

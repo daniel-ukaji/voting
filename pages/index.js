@@ -43,6 +43,7 @@ export default function Home() {
             src={Banner}
             layout="fill"
             objectFit="cover"
+            alt='Altina'
           />
         </div>
        
