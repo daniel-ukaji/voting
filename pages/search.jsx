@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
-import { SearchIcon } from 'lucide-react';
+import { Loader2, SearchIcon } from 'lucide-react';
 import axios from 'axios';
 import { Button } from "@/components/ui/button"
 import {
@@ -44,9 +44,13 @@ function Search() {
 
   const handleNomination = async () => {
     try {
+
+      setIsLoading(true); // Set loading state to true
+
       // Check if any of the required fields are empty
       if (!empno || !selectedPosition || !nomineeno) {
         alert('Please fill in all fields before submitting.');
+        setIsLoading(false); // Reset loading state
         return;
       }
   
@@ -77,7 +81,6 @@ function Search() {
       console.log('Nomination Response:', response.data);
   
       if (response.status === 200) {
-        // alert('Your nomination has been registered!');
         // Clear the form fields after a successful nomination
         setEmpno('');
         setSelectedPosition('');
@@ -96,6 +99,8 @@ function Search() {
         description: 'There was an error nominating your candidate.',
         variant: 'destructive',
       });
+    } finally {
+      setIsLoading(false); // Reset loading state in any case
     }
   };
 
@@ -194,8 +199,8 @@ function Search() {
                 <Dialog>
                   <DialogTrigger asChild>
                   <Button variant="outline" onClick={() => {setNomineeno(result.empno);setEmpno(employeeNumber);}}>
-  Nominate
-</Button>
+                    Nominate
+                  </Button>
                   </DialogTrigger>
                   <DialogContent className="sm:max-w-[700px]">
                     <DialogHeader>
@@ -212,6 +217,7 @@ function Search() {
                           value={empno}
                           onChange={(e) => setEmpno(e.target.value)}
                           className="col-span-3"
+                          disabled={true} // Add this line
                         />
                       </div>
                       <div className="grid grid-cols-4 items-center gap-4">
@@ -241,12 +247,22 @@ function Search() {
                           value={nomineeno}
                           onChange={(e) => setNomineeno(e.target.value)}
                           className="col-span-3"
+                          disabled={true} // Add this line
                         />
                       </div>
                     </div>
                     <DialogFooter>
-                      <Button type="submit" onClick={handleNomination}>
-                        Nominate
+                      <Button onClick={handleNomination} className="mb-10" disabled={isLoading}>
+                      {isLoading ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Nominating...
+                          </>
+                        ) : (
+                          <>
+                            Nominate
+                          </>
+                        )}
                       </Button>
                     </DialogFooter>
                   </DialogContent>

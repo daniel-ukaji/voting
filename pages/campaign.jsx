@@ -8,11 +8,10 @@ import { useNewAuth } from '@/services/NewAuthContext';
 import { PacmanLoader } from 'react-spinners';
 import { Textarea } from "@/components/ui/textarea"
 import { useRouter } from 'next/router';
-
+import { useToast } from '@/components/ui/use-toast';
 
 function Campaign() {
   const [editorHtml, setEditorHtml] = useState('');
-  const [empno, setEmpno] = useState('');
   const [selectedImage, setSelectedImage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isMessage, setIsMessage] = useState('');
@@ -31,6 +30,16 @@ function Campaign() {
   console.log(code);
 
   console.log(employeeNumber)
+
+  const [empno, setEmpno] = useState(employeeNumber);
+
+
+
+  // Set empno to employeeNumber on initial component load
+  useEffect(() => {
+    setEmpno(employeeNumber);
+  }, [employeeNumber]);
+
 
   const handleChange = (html) => {
     setEditorHtml(html);
@@ -84,6 +93,11 @@ function Campaign() {
         const data = await response.json();
         console.log('API Response:', data);
         router.push('/seecampaigns');
+        // toast({
+        //   title: 'There was a problem.',
+        //   description: 'There was an error creating your campaign.',
+        //   variant: 'destructive',
+        // });
       } else {
         console.error('API Request Failed:', response.statusText);
       }
@@ -172,7 +186,7 @@ function Campaign() {
         <div className="mt-10">
           <label>
             Employee Number:
-            <Input type="text" value={empno} className="w-1/4" onChange={handleEmpnoChange} />
+            <Input type="text" value={empno} className="w-1/4" onChange={handleEmpnoChange} disabled={true} />
           </label>
           <Button onClick={handleSubmit} className="mt-5 mb-10">Submit</Button>
         </div>
