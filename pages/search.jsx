@@ -31,6 +31,7 @@ function Search() {
   const { toast } = useToast();
   const { employeeNumber } = useNewAuth();
   const { currentStage } = useNewAuth();
+  
 
   console.log('Current Stage:',currentStage);
 
@@ -164,6 +165,22 @@ function Search() {
     <div>
       {/* <Navbar /> */}
       <MemberNavbar />
+      {currentStage === 'Campaign' ? (
+          <div>
+        <MemberNavbar />
+        <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
+          THE NOMINATION STAGE HAS ENDED
+        </div>
+      </div>          
+      ) : currentStage === 'Voting Ended' ? (
+        <div>
+          <MemberNavbar />
+          <div className="flex items-center justify-center h-screen mx-auto font-extrabold font-sora text-red-500">
+          THE VOTING STAGE HAS ENDED
+          </div>
+        </div>
+      ) : (
+            <>
       <div className='mt-24 flex justify-center items-center'>
         <div className="relative w-1/2">
           <input
@@ -274,6 +291,8 @@ function Search() {
           <p>No results found.</p>
         )}
       </div>
+      </>
+      )}
     </div>
   );
 }
