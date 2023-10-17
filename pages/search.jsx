@@ -186,10 +186,10 @@ function Search() {
                       </p>
                     </div> 
 
-                    <div className='flex flex-row space-x-3'>
+                    {/* <div className='flex flex-row space-x-3'>
                       <p>Employee No:</p>
                       <p>{result.empno}</p>
-                    </div>               
+                    </div>                */}
                 </div>
                 <Dialog>
                   <DialogTrigger asChild>
