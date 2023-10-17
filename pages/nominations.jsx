@@ -178,6 +178,7 @@ function Nominations() {
                 <thead>
                   <tr>
                     <th className="px-6 py-3 bg-gray-200 text-left">Employee Number</th>
+                    <th className="px-6 py-3 bg-gray-200 text-left">Name</th>
                     {positionHeaders.map((header, index) => (
                       <th
                         key={index}
@@ -200,6 +201,8 @@ function Nominations() {
                       }`}
                     >
                       <td className="px-6 py-4">{item.empno}</td>
+                      <td className="px-6 py-4">{item.name}</td>
+
                       {positionHeaders.map((header, headerIndex) => (
                         <td key={headerIndex} className="px-6 py-4">
                           {item.counts.find((countItem) => countItem.positionName === header)?.count || 0}

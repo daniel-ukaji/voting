@@ -111,6 +111,7 @@ function Seevotes() {
                 <thead>
                   <tr>
                     <th className="px-6 py-3 bg-gray-200 text-left">Employee Number</th>
+                    <th className="px-6 py-3 bg-gray-200 text-left">Name</th>
                     {positionHeaders.map((header, index) => (
                       <th key={index} className="px-6 py-3 bg-gray-200 text-left">
                         {header}
@@ -122,6 +123,7 @@ function Seevotes() {
                   {nominationsData.map((item, index) => (
                     <tr key={index} className={index % 2 === 0 ? 'bg-gray-100' : ''}>
                       <td className="px-6 py-4">{item.empno}</td>
+                      <td className="px-6 py-4">{item.name}</td>
                       {positionHeaders.map((header, headerIndex) => (
                         <td
                           key={headerIndex}
