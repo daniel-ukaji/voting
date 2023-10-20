@@ -176,7 +176,7 @@ function Seecampaigns() {
             <div key={campaign.empno} className='flex justify-center'>
               <Card className="w-2/6 flex flex-col justify-center items-center mb-5">
                 <div className='relative w-full h-[20rem]'>
-                  <Image alt="" src={campaign.image} layout='fill' objectFit="cover" className='h-[300px] object-cover' />
+                  <img alt="" src={campaign.image} layout='fill' objectFit="cover" className='w-full h-[300px] object-cover' />
                 </div>
                 <div className='flex flex-col justify-center items-center'>
                   <p className='mt-5 mb-2 text-gray-600 font-bold text-xl'>{campaign.name}</p>
