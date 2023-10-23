@@ -84,6 +84,7 @@ function MemberNavbar() {
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem><Link href='/viewvotes'>View Votes</Link></DropdownMenuItem>
+              <DropdownMenuItem><Link href='/viewnominations'>View Nominations</Link></DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
