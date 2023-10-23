@@ -89,7 +89,7 @@ function Seecampaigns() {
         }
       );
 
-      console.log(response);
+      console.log(response.data);
 
       if (response.status === 200) {
         // Check the response message for success
@@ -172,9 +172,10 @@ function Seecampaigns() {
         <p>Loading...</p>
       ) : (
         <div className='mt-20'>
+                        <div className="flex flex-wrap justify-center space-x-10">
           {campaignData.map((campaign) => (
-            <div key={campaign.empno} className='flex justify-center'>
-              <Card className="w-2/6 flex flex-col justify-center items-center mb-5">
+            <div key={campaign.empno} className='flex justify-center '>
+              <Card className="w-[22rem] flex flex-col justify-center items-center mb-5">
                 <div className='relative w-full h-[20rem]'>
                   <img alt="" src={campaign.image} layout='fill' objectFit="cover" className='w-full h-[300px] object-cover' />
                 </div>
@@ -260,6 +261,7 @@ function Seecampaigns() {
               </Card>
             </div>
           ))}
+          </div>
         </div>
       )}
 
