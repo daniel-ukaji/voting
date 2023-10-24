@@ -76,7 +76,7 @@ function MemberNavbar() {
           <DropdownMenu>
             <DropdownMenuTrigger>
               <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarImage src="https://travels.chevroncemcs.com/wp-content/uploads/2023/09/cropped-logo-1-1.png" className="w-10 h-10" />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
